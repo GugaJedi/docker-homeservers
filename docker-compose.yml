@@ -24,7 +24,7 @@ services:
       - ./plex/database:/config
       - ./plex/media:/data
     networks:
-      - network
+      - skywalker-network
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent:latest
     container_name: qbittorrent
@@ -44,7 +44,7 @@ services:
     depends_on:
       - plex
     networks:
-      - network
+      - skywalker-network
   tautulli:
     image: lscr.io/linuxserver/tautulli:latest
     container_name: tautulli
@@ -60,7 +60,8 @@ services:
     depends_on:
       - plex
     networks:
-      - network
+      - skywalker-network
 networks:
-  network:
-     driver: bridge
+  skywalker-network:
+    name: skywalker-network
+    driver: bridge
