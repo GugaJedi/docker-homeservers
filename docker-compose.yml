@@ -1,7 +1,8 @@
 version: '3'
+name: my-plex-server
 services:
   plex:
-    container_name: plex
+    container_name: plex-media-server
     image: plexinc/pms-docker
     restart: unless-stopped
     ports:
