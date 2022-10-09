@@ -1,7 +1,8 @@
 version: '3'
+name: my-plex-server
 services:
   plex:
-    container_name: plex
+    container_name: plex-media-server
     image: plexinc/pms-docker
     restart: unless-stopped
     ports:
@@ -16,15 +17,15 @@ services:
       - 32414:32414/udp
     environment:
       - TZ=America/Sao_Paulo
-      - PLEX_CLAIM=claim-Rx1CX3_TsfoJ1A3SpsD1
-      - ADVERTISE_IP=http://172.16.1.10:32400/
+      - PLEX_CLAIM=YOUR_SERVER_CLAIM_KEY
+      - ADVERTISE_IP=http://LOCAL_IP:32400/
     hostname: JEDIFLIX 3.0
     volumes:
       - ./plex/transcode:/transcode
       - ./plex/database:/config
       - ./plex/media:/data
-    depends_on:
-      - pihole
+    networks:
+      - skywalker-network
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent:latest
     container_name: qbittorrent
@@ -43,7 +44,8 @@ services:
     restart: unless-stopped
     depends_on:
       - plex
-      - pihole
+    networks:
+      - skywalker-network
   tautulli:
     image: lscr.io/linuxserver/tautulli:latest
     container_name: tautulli
@@ -58,33 +60,9 @@ services:
     restart: unless-stopped
     depends_on:
       - plex
-      - pihole
-  pihole:
-    container_name: pihole
-    image: cbcrowe/pihole-unbound:latest
-    hostname: ${HOSTNAME}
-    domainname: ${DOMAIN_NAME}
-    ports:
-      - 443:443/tcp
-      - 53:53/tcp
-      - 53:53/udp
-      - ${PIHOLE_WEBPORT:-80}:80/tcp #Allows use of different port to access pihole web interface when other docker containers use port 80
-      - 5335:5335/tcp # Uncomment to enable unbound access on local server
-      #- 22/tcp # Uncomment to enable SSH
-    environment:
-      - FTLCONF_LOCAL_IPV4=${FTLCONF_LOCAL_IPV4}
-      - TZ=${TZ:-UTC}
-      - WEBPASSWORD=${WEBPASSWORD}
-      - WEBTHEME=${WEBTHEME:-default-darker}
-      - REV_SERVER=${REV_SERVER:-false}
-      - REV_SERVER_TARGET=${REV_SERVER_TARGET}
-      - REV_SERVER_DOMAIN=${REV_SERVER_DOMAIN}
-      - REV_SERVER_CIDR=${REV_SERVER_CIDR}
-      - PIHOLE_DNS_=127.0.0.1#5335
-      - DNSSEC="true"
-      - DNSMASQ_LISTENING=single
-    volumes:
-      - './pihole/etc/pihole:/etc/pihole'
-      - './pihole/etc/dnsmasq.d:/etc/dnsmasq.d'
-    restart: unless-stopped
-    
+    networks:
+      - skywalker-network
+networks:
+  skywalker-network:
+    name: skywalker-network
+    driver: bridge
