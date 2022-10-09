@@ -1,8 +1,8 @@
 version: '3'
-name: my-plex-server
+name: mandalore
 services:
   plex:
-    container_name: plex-media-server
+    container_name: plex-server
     image: plexinc/pms-docker
     restart: unless-stopped
     ports:
