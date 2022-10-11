@@ -19,7 +19,7 @@ services:
       - TZ=America/Sao_Paulo
       - PLEX_CLAIM=claim-Rx1CX3_TsfoJ1A3SpsD1
       - ADVERTISE_IP=http://172.16.1.10:32400/
-    hostname: JEDIFLIX 3.0
+    hostname: JEDIFLIX
     volumes:
       - ./plex/transcode:/transcode
       - ./plex/database:/config
@@ -33,12 +33,12 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=America/Sao_Paulo
-      - WEBUI_PORT=8080
+      - WEBUI_PORT=8182
     volumes:
       - ./qbittorrent/config:/config
       - ./plex/media:/downloads
     ports:
-      - 8080:8080
+      - 8182:8080
       - 6881:6881
       - 6881:6881/udp
     restart: unless-stopped
