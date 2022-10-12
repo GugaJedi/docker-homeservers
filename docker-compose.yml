@@ -4,7 +4,7 @@ services:
   streamer:
     container_name: streamer
     image: plexinc/pms-docker
-    restart: unless-stopped
+    restart: always
     ports:
       - 32400:32400/tcp
       - 3005:3005/tcp
@@ -28,6 +28,7 @@ services:
       - skywalker-network
   downloads:
     image: lscr.io/linuxserver/qbittorrent:latest
+    restart: always
     container_name: downloads
     environment:
       - PUID=1000
@@ -41,7 +42,6 @@ services:
       - 8182:8182
       - 6881:6881
       - 6881:6881/udp
-    restart: unless-stopped
     depends_on:
       - streamer
     networks:
@@ -49,6 +49,7 @@ services:
   monitoring:
     image: lscr.io/linuxserver/tautulli:latest
     container_name: monitoring
+    restart: always
     environment:
       - PUID=1000
       - PGID=1000
@@ -57,7 +58,6 @@ services:
       - ./tautulli/config:/config
     ports:
       - 8181:8181
-    restart: unless-stopped
     depends_on:
       - streamer
     networks:
