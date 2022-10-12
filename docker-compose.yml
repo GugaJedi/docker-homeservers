@@ -1,8 +1,8 @@
 version: '3'
-name: mandalore
+name: tatooine
 services:
-  plex:
-    container_name: plex-server
+  streamer:
+    container_name: streamer
     image: plexinc/pms-docker
     restart: unless-stopped
     ports:
@@ -26,14 +26,14 @@ services:
       - ./plex/media:/data
     networks:
       - skywalker-network
-  qbittorrent:
+  downloads:
     image: lscr.io/linuxserver/qbittorrent:latest
-    container_name: qbittorrent
+    container_name: downloads
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=America/Sao_Paulo
-      - WEBUI_PORT=8182
+      - WEBUI_PORT=8080
     volumes:
       - ./qbittorrent/config:/config
       - ./plex/media:/downloads
@@ -43,12 +43,12 @@ services:
       - 6881:6881/udp
     restart: unless-stopped
     depends_on:
-      - plex
+      - streamer
     networks:
       - skywalker-network
-  tautulli:
+  monitoring:
     image: lscr.io/linuxserver/tautulli:latest
-    container_name: tautulli
+    container_name: monitoring
     environment:
       - PUID=1000
       - PGID=1000
@@ -59,7 +59,7 @@ services:
       - 8181:8181
     restart: unless-stopped
     depends_on:
-      - plex
+      - streamer
     networks:
       - skywalker-network
 networks:
