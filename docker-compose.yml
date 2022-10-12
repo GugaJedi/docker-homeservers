@@ -17,8 +17,8 @@ services:
       - 32414:32414/udp
     environment:
       - TZ=America/Sao_Paulo
-      - PLEX_CLAIM=YOUR_PLEX_CLAIM_KEY
-      - ADVERTISE_IP=http://HOST_MACHINE_IP:32400/
+      - PLEX_CLAIM=claim-Rx1CX3_TsfoJ1A3SpsD1
+      - ADVERTISE_IP=http://172.16.1.10:32400/
     hostname: jediflix
     volumes:
       - ./plex/transcode:/transcode
@@ -88,6 +88,28 @@ services:
         reservations:
           cpus: '0.05'
           memory: 64M
+  # database:
+  #     container_name: database
+  #     image: gugajedi/alpine-pgsql14:latest
+  #     restart: always
+  #     environment:
+  #       - POSTGRES_USER=postgres
+  #       - POSTGRES_PASSWORD=postgres
+  #       - POSTGRES_DB=postgres
+  #     volumes:
+  #       - ./postgresql/data:/var/lib/postgresql/data
+  #     ports:
+  #     - 5432:5432
+  #     networks:
+  #       - geek.net
+  #     deploy:
+  #       resources:
+  #         limits:
+  #           cpus: '0.70'
+  #           memory: 512M
+  #         reservations:
+  #           cpus: '0.15'
+  #           memory: 128M
   controller:
     container_name: controller
     image: mbentley/omada-controller:5.5
