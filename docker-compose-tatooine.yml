@@ -29,11 +29,11 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '1.50'
-          memory: 1G
+          cpus: '2.00'
+          memory: 448M
         reservations:
-          cpus: '0.70'
-          memory: 512M
+          cpus: '1.00'
+          memory: 128M
   downloads:
     image: lscr.io/linuxserver/qbittorrent:latest
     restart: always
@@ -59,10 +59,10 @@ services:
       resources:
         limits:
           cpus: '0.75'
-          memory: 1G
+          memory: 640M
         reservations:
-          cpus: '0.25'
-          memory: 512M
+          cpus: '0.05'
+          memory: 256M
   monitoring:
     image: lscr.io/linuxserver/tautulli:latest
     container_name: monitoring
@@ -83,11 +83,11 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.10'
-          memory: 512M
+          cpus: '0.15'
+          memory: 128M
         reservations:
-          cpus: '0.05'
-          memory: 64M
+          cpus: '0.01'
+          memory: 32M
   controller:
     container_name: controller
     image: mbentley/omada-controller:5.5
