@@ -1,0 +1,127 @@
+version: '3'
+name: tatooine
+services:
+  streamer:
+    container_name: jediflix
+    hostname: jediflix
+    image: plexinc/pms-docker
+    restart: always
+    ports:
+      - 32400:32400/tcp
+      - 3005:3005/tcp
+      - 8324:8324/tcp
+      - 32469:32469/tcp
+      - 1900:1900/udp
+      - 32410:32410/udp
+      - 32412:32412/udp
+      - 32413:32413/udp
+      - 32414:32414/udp
+    environment:
+      - TZ=America/Sao_Paulo
+      - PLEX_CLAIM=claim-xWYAYghHF_fzPJRhBTgt
+      - ADVERTISE_IP=http://jediflix.geek.net:32400/
+    hostname: jediflix
+    volumes:
+      - ./plex/transcode:/transcode
+      - ./plex/database:/config
+      - ./plex/media:/data
+    networks:
+      - geek.net
+    deploy:
+      resources:
+        limits:
+          cpus: '2.00'
+          memory: 448M
+        reservations:
+          cpus: '1.00'
+          memory: 128M
+  downloads:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    restart: always
+    container_name: downloads
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Sao_Paulo
+      - WEBUI_PORT=8182
+    hostname: downloads
+    volumes:
+      - ./qbittorrent/config:/config
+      - ./plex/media:/downloads
+    ports:
+      - 8182:8182
+      - 6881:6881/tcp
+      - 6881:6881/udp
+    depends_on:
+      - streamer
+    networks:
+      - geek.net
+    deploy:
+      resources:
+        limits:
+          cpus: '0.75'
+          memory: 640M
+        reservations:
+          cpus: '0.05'
+          memory: 256M
+  monitoring:
+    image: lscr.io/linuxserver/tautulli:latest
+    container_name: monitoring
+    restart: always
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Sao_Paulo
+    hostname: monitoring
+    volumes:
+      - ./tautulli/config:/config
+    ports:
+      - 8181:8181
+    depends_on:
+      - streamer
+    networks:
+      - geek.net
+    deploy:
+      resources:
+        limits:
+          cpus: '0.15'
+          memory: 128M
+        reservations:
+          cpus: '0.01'
+          memory: 32M
+  controller:
+    container_name: controller
+    image: mbentley/omada-controller:5.5
+    restart: always
+    ports:
+    - 8088:8088
+    - 8043:8043
+    - 29810:29810/udp
+    - 29811:29811/tcp
+    - 29812:29812/tcp
+    - 29813:29813/tcp
+    - 29814:29814/tcp
+    networks:
+      - geek.net
+    environment:
+      - MANAGE_HTTP_PORT=8088
+      - MANAGE_HTTPS_PORT=8043
+      - PGID=508
+      - PORTAL_HTTP_PORT=8088
+      - PORTAL_HTTPS_PORT=8043
+      - PUID=508
+      - SHOW_SERVER_LOGS=true
+      - SHOW_MONGODB_LOGS=false
+      - SSL_CERT_NAME=tls.crt
+      - SSL_KEY_NAME=tls.key
+      - TZ=America/Sao_Paulo
+    volumes:
+      - ./omada/data:/opt/tplink/EAPController/data
+      - ./omada/logs:/opt/tplink/EAPController/logs
+volumes:
+  omada-data:
+  omada-logs:  
+networks:
+  geek.net:
+    name: geek.net
+    driver: bridge
