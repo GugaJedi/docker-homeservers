@@ -18,8 +18,8 @@ services:
       - 32414:32414/udp
     environment:
       - TZ=America/Sao_Paulo
-      - PLEX_CLAIM=claim-xWYAYghHF_fzPJRhBTgt
-      - ADVERTISE_IP=http://jediflix.geek.net:32400/
+      - PLEX_CLAIM=YOU_CLAIM_TAG_FOR_PLEX_SERVER
+      - ADVERTISE_IP=http://HOSTNAME.NETWORK:32400/
     volumes:
       - ./plex/transcode:/transcode
       - ./plex/database:/config
