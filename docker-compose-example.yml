@@ -88,43 +88,43 @@ services:
         reservations:
           cpus: '0.01'
           memory: 32M
-  controller:
-    container_name: omada-controller
-    image: mbentley/omada-controller:5.5
-    restart: always
-    ports:
-    - 8088:8088
-    - 8043:8043
-    - 29810:29810/udp
-    - 29811:29811/tcp
-    - 29812:29812/tcp
-    - 29813:29813/tcp
-    - 29814:29814/tcp
-    networks:
-      - geek.net
-    environment:
-      - MANAGE_HTTP_PORT=8088
-      - MANAGE_HTTPS_PORT=8043
-      - PGID=508
-      - PORTAL_HTTP_PORT=8088
-      - PORTAL_HTTPS_PORT=8043
-      - PUID=508
-      - SHOW_SERVER_LOGS=true
-      - SHOW_MONGODB_LOGS=false
-      - SSL_CERT_NAME=tls.crt
-      - SSL_KEY_NAME=tls.key
-      - TZ=America/Sao_Paulo
-    volumes:
-      - ./omada/data:/opt/tplink/EAPController/data
-      - ./omada/logs:/opt/tplink/EAPController/logs
-    deploy:
-      resources:
-        limits:
-          cpus: '0.35'
-          memory: 640M
-        reservations:
-          cpus: '0.05'
-          memory: 128M
+  # controller:
+  #   container_name: omada-controller
+  #   image: mbentley/omada-controller:5.5
+  #   restart: always
+  #   ports:
+  #   - 8088:8088
+  #   - 8043:8043
+  #   - 29810:29810/udp
+  #   - 29811:29811/tcp
+  #   - 29812:29812/tcp
+  #   - 29813:29813/tcp
+  #   - 29814:29814/tcp
+  #   networks:
+  #     - geek.net
+  #   environment:
+  #     - MANAGE_HTTP_PORT=8088
+  #     - MANAGE_HTTPS_PORT=8043
+  #     - PGID=508
+  #     - PORTAL_HTTP_PORT=8088
+  #     - PORTAL_HTTPS_PORT=8043
+  #     - PUID=508
+  #     - SHOW_SERVER_LOGS=true
+  #     - SHOW_MONGODB_LOGS=false
+  #     - SSL_CERT_NAME=tls.crt
+  #     - SSL_KEY_NAME=tls.key
+  #     - TZ=America/Sao_Paulo
+  #   volumes:
+  #     - ./omada/data:/opt/tplink/EAPController/data
+  #     - ./omada/logs:/opt/tplink/EAPController/logs
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         cpus: '0.35'
+  #         memory: 640M
+  #       reservations:
+  #         cpus: '0.05'
+  #         memory: 128M
 volumes:
   omada-data:
   omada-logs:  
