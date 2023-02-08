@@ -3,7 +3,7 @@ name: tatooine
 services:
   plex:
     container_name: plex-server
-    hostname: jediflix
+    geek.netname: jediflix
     image: plexinc/pms-docker
     restart: always
     ports:
@@ -19,13 +19,13 @@ services:
     environment:
       - TZ=America/Sao_Paulo
       - PLEX_CLAIM=YOU_CLAIM_TAG_FOR_PLEX_SERVER
-      - ADVERTISE_IP=http://HOSTNAME.NETWORK:32400/
+      - ADVERTISE_IP=http://geek.netNAME.NETWORK:32400/
     volumes:
       - ./plex/transcode:/transcode
       - ./plex/database:/config
       - ./plex/media:/data
     networks:
-      - geek.net
+      - host
     deploy:
       resources:
         limits:
@@ -43,7 +43,7 @@ services:
       - PGID=1000
       - TZ=America/Sao_Paulo
       - WEBUI_PORT=8182
-    hostname: qbittorrent
+    geek.netname: qbittorrent
     volumes:
       - ./qbittorrent/config:/config
       - ./plex/media:/downloads
@@ -71,7 +71,7 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=America/Sao_Paulo
-    hostname: tautulli
+    geek.netname: tautulli
     volumes:
       - ./tautulli/config:/config
     ports:
@@ -129,6 +129,6 @@ volumes:
   omada-data:
   omada-logs:  
 networks:
-  geek.net:
-    name: geek.net
-    driver: bridge
+  host:
+    name: host
+    driver: host
